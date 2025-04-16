@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - CGM-EHR Integration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <a href="index.html">CGM-EHR Integration</a>
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li class="register-nav"><a href="register.html">Register</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>Get in touch with our team to learn more about CGM-EHR integration</p>
+        </div>
+    </section>
+
+    <!-- Contact Options Section -->
+    <section class="contact-options">
+        <div class="container">
+            <div class="options-grid">
+                <div class="contact-option">
+                    <div class="option-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>General Inquiries</h3>
+                    <p>For general questions about our CGM-EHR integration project and services.</p>
+                    <div class="option-details">
+                        <p><i class="fas fa-envelope"></i> info@cgm-ehr.com</p>
+                        <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    </div>
+                </div>
+                
+                <div class="contact-option">
+                    <div class="option-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Technical Support</h3>
+                    <p>For implementation assistance, troubleshooting, and technical questions.</p>
+                    <div class="option-details">
+                        <p><i class="fas fa-envelope"></i> support@cgm-ehr.com</p>
+                        <p><i class="fas fa-phone"></i> (555) 234-5678</p>
+                    </div>
+                </div>
+                
+                <div class="contact-option">
+                    <div class="option-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Partnership Opportunities</h3>
+                    <p>For healthcare organizations and technology companies interested in partnerships.</p>
+                    <div class="option-details">
+                        <p><i class="fas fa-envelope"></i> partners@cgm-ehr.com</p>
+                        <p><i class="fas fa-phone"></i> (555) 345-6789</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-form">
+                    <div class="form-header">
+                        <h2>Send Us a Message</h2>
+                        <p>Fill out the form below and we'll get back to you as soon as possible.</p>
+                    </div>
+                    
+                    <form action="#" method="post" id="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="organization">Organization</label>
+                                <input type="text" id="organization" name="organization">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="inquiry-type">Inquiry Type *</label>
+                            <select id="inquiry-type" name="inquiry-type" required>
+                                <option value="">Select Inquiry Type</option>
+                                <option value="general">General Information</option>
+                                <option value="technical">Technical Support</option>
+                                <option value="implementation">Implementation Assistance</option>
+                                <option value="partnership">Partnership Inquiry</option>
+                                <option value="demo">Request a Demo</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="consent" required>
+                                <span class="checkmark"></span>
+                                I consent to having this website store my submitted information so they can respond to my inquiry.
+                            </label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="info-card">
+                        <h3><i class="fas fa-map-marker-alt"></i> Visit Us</h3>
+                        <address>
+                            123 Medical Center Drive<br>
+                            Suite 200<br>
+                            Healthcare City, HC 12345<br>
+                            United States
+                        </address>
+                        
+                        <div class="map-container">
+                            <img src="/api/placeholder/400/200" alt="Office location map">
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-clock"></i> Business Hours</h3>
+                        <ul class="hours-list">
+                            <li><span>Monday - Friday:</span> 9:00 AM - 5:00 PM EST</li>
+                            <li><span>Saturday - Sunday:</span> Closed</li>
+                        </ul>
+                        <p class="note">Technical support is available 24/7 for registered users.</p>
+                    </div>
+                    
+                    <div class="info-card">
+                        <h3><i class="fas fa-comments"></i> Connect With Us</h3>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i> Twitter</a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                            <a href="#" class="social-link"><i class="fab fa-youtube"></i> YouTube</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section contact-faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Quick answers to common questions about contacting our team</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How quickly can I expect a response to my inquiry?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We strive to respond to all inquiries within 1-2 business days. Technical support requests from registered users receive priority response times, usually within 24 hours.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How can I schedule a demo of the CGM-EHR integration?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can request a demo by selecting "Request a Demo" in the inquiry type field of our contact form. Alternatively, you can email demo@cgm-ehr.com with your preferred date and time, and our team will coordinate with you.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Where can I get support for technical issues?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Registered users can access our dedicated technical support portal at support.cgm-ehr.com. For urgent assistance, please call our technical support hotline at (555) 234-5678, which is available 24/7.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I visit your office to discuss implementation in person?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, in-person consultations are available by appointment. Please contact us at least one week in advance to schedule a meeting with our implementation specialists at our headquarters.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-container">
+                <div class="newsletter-content">
+                    <h2>Stay Updated</h2>
+                    <p>Subscribe to our newsletter to receive the latest news, updates, and resources on CGM-EHR integration.</p>
+                </div>
+                <div class="newsletter-form">
+                    <form action="#" method="post">
+                        <div class="form-group newsletter-input">
+                            <input type="email" placeholder="Your email address" required>
+                            <button type="submit" class="btn">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <p>We're dedicated to improving diabetic care through innovative technology integration between continuous glucose monitoring and electronic health records.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Registration</h3>
+                    <ul>
+                        <li><a href="register.html">Provider Registration</a></li>
+                        <li><a href="register.html">Patient Portal</a></li>
+                        <li><a href="register.html">Partner Program</a></li>
+                        <li><a href="register.html">Healthcare Systems</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="resources.html">Blog</a></li>
+                        <li><a href="resources.html">Case Studies</a></li>
+                        <li><a href="resources.html">Implementation Guide</a></li>
+                        <li><a href="resources.html">FAQs</a></li>
+                        <li><a href="resources.html">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> info@cgm-ehr.com</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Medical Center Drive<br>Suite 200<br>Healthcare City, HC 12345</p>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 CGM-EHR Integration Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Form validation
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple validation
+            let valid = true;
+            const requiredFields = this.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.classList.add('error');
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+            
+            if (valid) {
+                // For demo purposes only - would normally submit to server
+                alert('Thank you for your message! We will get back to you soon.');
+                this.reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+        
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('.faq-toggle i');
+                
+                // Toggle active class
+                question.parentElement.classList.toggle('active');
+                
+                // Toggle icon
+                if (icon.classList.contains('fa-plus')) {
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                } else {
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
+                }
+                
+                // Toggle answer visibility
+                if (answer.style.maxHeight) {
+                    answer.style.maxHeight = null;
+                } else {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+    </script>
+</body>
+</html>">
+                    <div class="option-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>General Inquiries</h3>
+                    <p>For general questions about our CGM-EHR integration project and services.</p>
+                    <div class="option-details">
+                        <p><i class="fas fa-envelope"></i> info@cgm-ehr.com</p>
+                        <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    </div>
+                </div>
+                
+                <div class="contact-option

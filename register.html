@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CGM-EHR Integration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <a href="index.html">CGM-EHR Integration</a>
+            </div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="register.html" class="active">Register</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>Register for Access</h1>
+            <p>Join our platform to transform diabetes management with CGM-EHR integration</p>
+        </div>
+    </section>
+
+    <!-- Registration Options Section -->
+    <section class="register-options">
+        <div class="container">
+            <div class="section-header">
+                <h2>Choose Your Registration Path</h2>
+                <p>Select the option that best describes your role in diabetes care</p>
+            </div>
+            
+            <div class="options-grid">
+                <div class="option-card" id="provider-option">
+                    <div class="option-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Healthcare Provider</h3>
+                    <p>For physicians, nurses, diabetes educators, and healthcare professionals managing diabetic patients</p>
+                    <a href="#provider-form" class="btn option-btn">Select</a>
+                </div>
+                
+                <div class="option-card" id="patient-option">
+                    <div class="option-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Patient</h3>
+                    <p>For individuals with Type I or Type II diabetes who use or plan to use continuous glucose monitoring</p>
+                    <a href="#patient-form" class="btn option-btn">Select</a>
+                </div>
+                
+                <div class="option-card" id="organization-option">
+                    <div class="option-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <h3>Healthcare Organization</h3>
+                    <p>For hospitals, clinics, and healthcare systems implementing CGM-EHR integration</p>
+                    <a href="#organization-form" class="btn option-btn">Select</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Forms Section -->
+    <section class="registration-forms">
+        <div class="container">
+            <!-- Provider Registration Form -->
+            <div class="registration-form" id="provider-form">
+                <div class="form-header">
+                    <h2><i class="fas fa-user-md"></i> Healthcare Provider Registration</h2>
+                    <p>Complete the form below to register as a healthcare provider</p>
+                </div>
+                
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="provider-name">Full Name</label>
+                        <input type="text" id="provider-name" name="provider-name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="provider-email">Email Address</label>
+                            <input type="email" id="provider-email" name="provider-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="provider-phone">Phone Number</label>
+                            <input type="tel" id="provider-phone" name="provider-phone">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="provider-specialty">Medical Specialty</label>
+                            <select id="provider-specialty" name="provider-specialty" required>
+                                <option value="">Select Specialty</option>
+                                <option value="endocrinology">Endocrinology</option>
+                                <option value="internal-medicine">Internal Medicine</option>
+                                <option value="family-medicine">Family Medicine</option>
+                                <option value="pediatrics">Pediatrics</option>
+                                <option value="nursing">Nursing</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="provider-license">Medical License Number</label>
+                            <input type="text" id="provider-license" name="provider-license" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="provider-organization">Healthcare Organization</label>
+                        <input type="text" id="provider-organization" name="provider-organization" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="provider-ehr">Current EHR System</label>
+                        <select id="provider-ehr" name="provider-ehr" required>
+                            <option value="">Select EHR System</option>
+                            <option value="epic">Epic</option>
+                            <option value="cerner">Cerner</option>
+                            <option value="allscripts">Allscripts</option>
+                            <option value="meditech">MEDITECH</option>
+                            <option value="nextgen">NextGen</option>
+                            <option value="athenahealth">athenahealth</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label>CGM Devices You Work With</label>
+                        <div class="checkbox-options">
+                            <label><input type="checkbox" name="cgm-device[]" value="dexcom"> Dexcom</label>
+                            <label><input type="checkbox" name="cgm-device[]" value="freestyle"> FreeStyle Libre</label>
+                            <label><input type="checkbox" name="cgm-device[]" value="medtronic"> Medtronic</label>
+                            <label><input type="checkbox" name="cgm-device[]" value="other"> Other</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="provider-patients">Approximate Number of Diabetic Patients</label>
+                        <input type="number" id="provider-patients" name="provider-patients" min="0">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Register as Healthcare Provider</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Patient Registration Form -->
+            <div class="registration-form" id="patient-form">
+                <div class="form-header">
+                    <h2><i class="fas fa-user"></i> Patient Registration</h2>
+                    <p>Complete the form below to register as a patient</p>
+                </div>
+                
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="patient-name">Full Name</label>
+                        <input type="text" id="patient-name" name="patient-name" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patient-email">Email Address</label>
+                            <input type="email" id="patient-email" name="patient-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patient-phone">Phone Number</label>
+                            <input type="tel" id="patient-phone" name="patient-phone">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="patient-dob">Date of Birth</label>
+                            <input type="date" id="patient-dob" name="patient-dob" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="patient-type">Diabetes Type</label>
+                            <select id="patient-type" name="patient-type" required>
+                                <option value="">Select Type</option>
+                                <option value="type1">Type 1</option>
+                                <option value="type2">Type 2</option>
+                                <option value="gestational">Gestational</option>
+                                <option value="prediabetes">Prediabetes</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient-cgm">Current CGM Device</label>
+                        <select id="patient-cgm" name="patient-cgm">
+                            <option value="">Select CGM Device (if applicable)</option>
+                            <option value="dexcom-g6">Dexcom G6</option>
+                            <option value="dexcom-g7">Dexcom G7</option>
+                            <option value="freestyle-libre">FreeStyle Libre</option>
+                            <option value="freestyle-libre-2">FreeStyle Libre 2</option>
+                            <option value="medtronic">Medtronic Guardian</option>
+                            <option value="other">Other</option>
+                            <option value="none">None (Planning to start)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient-provider">Healthcare Provider's Name</label>
+                        <input type="text" id="patient-provider" name="patient-provider">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient-provider-facility">Healthcare Facility</label>
+                        <input type="text" id="patient-provider-facility" name="patient-provider-facility">
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="hipaa" required>
+                            <span class="checkmark"></span>
+                            I authorize the sharing of my health data in accordance with HIPAA regulations
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Register as Patient</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Organization Registration Form -->
+            <div class="registration-form" id="organization-form">
+                <div class="form-header">
+                    <h2><i class="fas fa-hospital"></i> Healthcare Organization Registration</h2>
+                    <p>Complete the form below to register your healthcare organization</p>
+                </div>
+                
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <label for="org-name">Organization Name</label>
+                        <input type="text" id="org-name" name="org-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="org-type">Organization Type</label>
+                        <select id="org-type" name="org-type" required>
+                            <option value="">Select Type</option>
+                            <option value="hospital">Hospital</option>
+                            <option value="clinic">Clinic</option>
+                            <option value="private-practice">Private Practice</option>
+                            <option value="health-system">Health System</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="org-address">Address</label>
+                        <input type="text" id="org-address" name="org-address" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="org-city">City</label>
+                            <input type="text" id="org-city" name="org-city" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="org-state">State/Province</label>
+                            <input type="text" id="org-state" name="org-state" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="org-zip">ZIP/Postal Code</label>
+                            <input type="text" id="org-zip" name="org-zip" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="org-contact-name">Contact Person Name</label>
+                            <input type="text" id="org-contact-name" name="org-contact-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="org-contact-title">Job Title</label>
+                            <input type="text" id="org-contact-title" name="org-contact-title" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="org-email">Email Address</label>
+                            <input type="email" id="org-email" name="org-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="org-phone">Phone Number</label>
+                            <input type="tel" id="org-phone" name="org-phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="org-ehr">Current EHR System</label>
+                        <select id="org-ehr" name="org-ehr" required>
+                            <option value="">Select EHR System</option>
+                            <option value="epic">Epic</option>
+                            <option value="cerner">Cerner</option>
+                            <option value="allscripts">Allscripts</option>
+                            <option value="meditech">MEDITECH</option>
+                            <option value="nextgen">NextGen</option>
+                            <option value="athenahealth">athenahealth</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="org-diabetic-patients">Approximate Number of Diabetic Patients</label>
+                        <input type="number" id="org-diabetic-patients" name="org-diabetic-patients" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="org-comments">Additional Information</label>
+                        <textarea id="org-comments" name="org-comments" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn">Register Organization</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits register-benefits">
+        <div class="container">
+            <div class="section-header">
+                <h2>Benefits of Registration</h2>
+                <p>Join our platform to experience the advantages of CGM-EHR integration</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefits-content">
+                    <div class="benefit-list">
+                        <h3><i class="fas fa-user-md"></i> For Healthcare Providers</h3>
+                        <ul>
+                            <li>Real-time access to patient glucose data directly in your EHR</li>
+                            <li>Automated alerts for out-of-range glucose readings</li>
+                            <li>Comprehensive visualization tools for trend analysis</li>
+                            <li>Reduced administrative burden with streamlined workflows</li>
+                            <li>Improved patient outcomes through proactive care</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="benefit-list">
+                        <h3><i class="fas fa-users"></i> For Patients</h3>
+                        <ul>
+                            <li>Better disease management with continuous monitoring</li>
+                            <li>Fewer emergency visits and hospitalizations</li>
+                            <li>Improved communication with healthcare providers</li>
+                            <li>Greater involvement in your own care decisions</li>
+                            <li>Peace of mind through proactive health monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="benefits-image">
+                    <img src="/api/placeholder/600/450" alt="Registration benefits">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Answers to common questions about registration and the CGM-EHR integration</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What information do I need to register?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Healthcare providers will need their professional credentials, current EHR system information, and details about their practice. Patients will need basic personal information, diabetes type, and current CGM device details. Organizations will need facility information and EHR system details.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Is there a cost to register?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Registration is free for patients. Healthcare providers and organizations may have subscription fees based on the integration features and number of patients. Detailed pricing information will be provided during the registration process.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Which CGM devices are compatible with your system?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our system currently integrates with Dexcom G6/G7, FreeStyle Libre/Libre 2, and Medtronic Guardian devices. We are continuously expanding our compatibility with additional devices.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How is my health data protected?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All health data is encrypted and securely stored in compliance with HIPAA regulations. We implement robust security measures including multi-factor authentication, secure data transmission, and comprehensive data backup protocols.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What EHR systems are compatible with your integration?</h3>
+                        <span class="faq-toggle"><i class="fas fa-plus"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our system integrates with major EHR platforms including Epic, Cerner, Allscripts, MEDITECH, NextGen, and athenahealth. If you use a different EHR system, please contact us to discuss integration options.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <p>We're dedicated to improving diabetic care through innovative technology integration between continuous glucose monitoring and electronic health records.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Registration</h3>
+                    <ul>
+                        <li><a href="#provider-form">Provider Registration</a></li>
+                        <li><a href="#patient-form">Patient Portal</a></li>
+                        <li><a href="#organization-form">Partner Program</a></li>
+                        <li><a href="#organization-form">Healthcare Systems</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="resources.html">Blog</a></li>
+                        <li><a href="resources.html">Case Studies</a></li>
+                        <li><a href="resources.html">Implementation Guide</a></li>
+                        <li><a href="resources.html">FAQs</a></li>
+                        <li><a href="resources.html">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> info@cgm-ehr.com</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Medical Center Drive<br>Suite 200<br>Healthcare City, HC 12345</p>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 CGM-EHR Integration Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('.faq-toggle i');
+                
+                // Toggle active class
+                question.parentElement.classList.toggle('active');
+                
+                // Toggle icon
+                if (icon.classList.contains('fa-plus')) {
+                    icon.classList.remove('fa-plus');
+                    icon.classList.add('fa-minus');
+                } else {
+                    icon.classList.remove('fa-minus');
+                    icon.classList.add('fa-plus');
+                }
+                
+                // Toggle answer visibility
+                if (answer.style.maxHeight) {
+                    answer.style.maxHeight = null;
+                } else {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+        
+        // Registration Option Selection
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Hide all forms
+                document.querySelectorAll('.registration-form').forEach(form => {
+                    form.style.display = 'none';
+                });
+                
+                // Show selected form
+                const targetId = btn.getAttribute('href');
+                document.querySelector(targetId).style.display = 'block';
+                
+                // Scroll to form
+                window.scrollTo({
+                    top: document.querySelector(targetId).offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
