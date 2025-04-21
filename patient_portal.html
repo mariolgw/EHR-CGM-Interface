@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal - CGM-EHR Integration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f9ff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2a5c8b;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info {
+            margin-right: 20px;
+            color: white;
+        }
+
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            padding: 20px 0;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-right: 20px;
+            height: calc(100vh - 110px);
+            position: sticky;
+            top: 90px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #f0f7ff;
+        }
+
+        .sidebar a.active {
+            background-color: #e0f7fa;
+            color: #2a5c8b;
+            font-weight: bold;
+        }
+
+        .sidebar i {
+            margin-right: 10px;
+            color: #3498db;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        /* Patient Profile Section */
+        .profile-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background-color: #e0f7fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 30px;
+            color: #3498db;
+        }
+
+        .profile-info h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #2a5c8b;
+        }
+
+        .profile-meta {
+            display: flex;
+            color: #666;
+            font-size: 14px;
+            flex-wrap: wrap;
+        }
+
+        .profile-meta span {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .profile-meta i {
+            margin-right: 5px;
+            color: #3498db;
+        }
+
+        /* Data Cards */
+        .data-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .data-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .data-card h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .data-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2a5c8b;
+        }
+
+        .data-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .data-trend {
+            margin-top: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .up-trend {
+            color: #27ae60;
+        }
+
+        .down-trend {
+            color: #e74c3c;
+        }
+
+        .trend-icon {
+            margin-right: 5px;
+        }
+
+        /* Chart Containers */
+        .chart-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            color: #2a5c8b;
+        }
+
+        .chart-actions select {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .chart-content {
+            height: 300px;
+        }
+
+        /* Message Center */
+        .message-center {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .message-title {
+            font-size: 18px;
+            color: #2a5c8b;
+        }
+
+        .compose-btn {
+            background-color: #27ae60;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .compose-btn i {
+            margin-right: 5px;
+        }
+
+        .message-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .message-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .message-sender {
+            width: 40px;
+            height: 40px;
+            background-color: #e0f7fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #3498db;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-subject {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .message-preview {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .message-meta {
+            text-align: right;
+            min-width: 100px;
+        }
+
+        .message-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .unread {
+            background-color: #f0f7ff;
+        }
+
+        .unread .message-subject {
+            color: #2a5c8b;
+        }
+
+        .message-badge {
+            background-color: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 10px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            color: #2a5c8b;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 20px;
+            color: #999;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            height: 120px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background-color: #219653;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        /* Tips Section */
+        .tips-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tips-header {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tips-title {
+            font-size: 18px;
+            color: #2a5c8b;
+        }
+
+        .tips-list {
+            list-style: none;
+        }
+
+        .tips-list li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .tips-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tip-icon {
+            margin-right: 15px;
+            color: #27ae60;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        .tip-content h4 {
+            margin-bottom: 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .tip-content p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                margin-right: 0;
+                margin-bottom: 20px;
+                position: static;
+            }
+            
+            .data-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .data-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            .profile-meta {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                CGM-EHR Patient Portal
+            </a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <i class="fas fa-user"></i> <span id="username">Patient Name</span>
+                </div>
+                <a href="login.html" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <div class="container dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="#" class="active" id="dashboard-link"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#" id="messages-link"><i class="fas fa-envelope"></i> Messages</a></li>
+                <li><a href="#" id="tips-link"><i class="fas fa-lightbulb"></i> Health Tips</a></li>
+                <li><a href="#" id="settings-link"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard View (default) -->
+            <div id="dashboard-view">
+                <!-- Profile Section -->
+                <div class="profile-section">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="patient-name">Patient Name</h2>
+                        <div class="profile-meta">
+                            <span><i class="fas fa-birthday-cake"></i> <span id="patient-age">42</span> years</span>
+                            <span><i class="fas fa-weight"></i> <span id="patient-weight">75</span> kg</span>
+                            <span><i class="fas fa-ruler-vertical"></i> <span id="patient-height">175</span> cm</span>
+                            <span><i class="fas fa-clipboard-list"></i> <span id="patient-diagnosis">Type 2 Diabetes</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Cards -->
+                <div class="data-cards">
+                    <div class="data-card">
+                        <h3>Current Glucose</h3>
+                        <div class="data-value" id="current-glucose">142</div>
+                        <div class="data-label">mg/dL</div>
+                        <div class="data-trend up-trend">
+                            <span class="trend-icon"><i class="fas fa-arrow-up"></i></span>
+                            <span id="glucose-trend">5</span> mg/dL from last reading
+                        </div>
+                    </div>
+                    <div class="data-card">
+                        <h3>Time in Range</h3>
+                        <div class="data-value" id="time-in-range">68</div>
+                        <div class="data-label">% of time</div>
+                        <div class="data-trend down-trend">
+                            <span class="trend-icon"><i class="fas fa-arrow-down"></i></span>
+                            <span id="range-trend">3</span>% from yesterday
+                        </div>
+                    </div>
+                    <div class="data-card">
+                        <h3>Average Glucose (7 days)</h3>
+                        <div class="data-value" id="avg-glucose">154</div>
+                        <div class="data-label">mg/dL</div>
+                        <div class="data-trend up-trend">
+                            <span class="trend-icon"><i class="fas fa-arrow-up"></i></span>
+                            <span id="avg-trend">12</span> mg/dL from last week
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glucose Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">Glucose Levels</div>
+                        <div class="chart-actions">
+                            <select id="glucose-timeframe">
+                                <option value="day">Last 24 Hours</option>
+                                <option value="week" selected>Last 7 Days</option>
+                                <option value="month">Last 30 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="glucose-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Messages Preview -->
+                <div class="message-center">
+                    <div class="message-header">
+                        <div class="message-title">
+                            <i class="fas fa-envelope"></i> Recent Messages
+                        </div>
+                        <button class="compose-btn" id="compose-btn">
+                            <i class="fas fa-pen"></i> New Message
+                        </button>
+                    </div>
+                    
+                    <div id="message-preview-list">
+                        <!-- Messages will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages View (hidden initially) -->
+            <div id="messages-view" style="display: none;">
+                <div class="message-center" style="margin-top: 0;">
+                    <div class="message-header">
+                        <div class="message-title">
+                            <i class="fas fa-envelope"></i> Messages
+                        </div>
+                        <button class="compose-btn" id="compose-btn-2">
+                            <i class="fas fa-pen"></i> New Message
+                        </button>
+                    </div>
+                    
+                    <div id="message-full-list">
+                        <!-- Messages will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Tips View (hidden initially) -->
+            <div id="tips-view" style="display: none;">
+                <div class="tips-section">
+                    <div class="tips-header">
+                        <div class="tips-title">
+                            <i class="fas fa-lightbulb"></i> Diabetes Management Tips
+                        </div>
+                    </div>
+                    
+                    <ul class="tips-list">
+                        <li>
+                            <div class="tip-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Maintain a Consistent Meal Schedule</h4>
+                                <p>Eating at regular times helps maintain stable blood sugar levels. Try to eat at the same times each day and avoid skipping meals.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tip-icon">
+                                <i class="fas fa-walking"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Stay Active Daily</h4>
+                                <p>Regular physical activity can lower your blood glucose and improve insulin sensitivity. Aim for at least 30 minutes of moderate activity most days.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tip-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Monitor Patterns, Not Just Numbers</h4>
+                                <p>Look for trends in your glucose readings rather than focusing on individual high or low readings. This helps you understand how your body responds to food, activity, and medication.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tip-icon">
+                                <i class="fas fa-apple-alt"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Choose Nutrient-Dense Carbohydrates</h4>
+                                <p>Not all carbs affect blood sugar equally. Choose whole grains, legumes, fruits, and vegetables over processed carbohydrates for better glucose control.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="tip-icon">
+                                <i class="fas fa-bed"></i>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Prioritize Sleep</h4>
+                                <p>Poor sleep can affect glucose metabolism and insulin sensitivity. Aim for 7-8 hours of quality sleep each night for better diabetes management.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Settings View (hidden initially) -->
+            <div id="settings-view" style="display: none;">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">Account Settings</div>
+                    </div>
+                    <div style="padding: 20px;">
+                        <form id="settings-form">
+                            <div class="form-group">
+                                <label for="setting-name">Your Name</label>
+                                <input type="text" id="setting-name" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-email">Email Address</label>
+                                <input type="email" id="setting-email" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-phone">Phone Number</label>
+                                <input type="tel" id="setting-phone" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-password">Change Password</label>
+                                <input type="password" id="setting-password" placeholder="New password">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-password-confirm">Confirm Password</label>
+                                <input type="password" id="setting-password-confirm" placeholder="Confirm new password">
+                            </div>
+                            <div class="form-group">
+                                <label>Notification Preferences</label>
+                                <div style="margin-top: 10px;">
+                                    <label style="display: flex; align-items: center; font-weight: normal; margin-bottom: 10px;">
+                                        <input type="checkbox" checked style="width: auto; margin-right: 10px;"> Email notifications for high/low glucose alerts
+                                    </label>
+                                    <label style="display: flex; align-items: center; font-weight: normal; margin-bottom: 10px;">
+                                        <input type="checkbox" checked style="width: auto; margin-right: 10px;"> SMS notifications for critical glucose levels
+                                    </label>
+                                    <label style="display: flex; align-items: center; font-weight: normal;">
+                                        <input type="checkbox" checked style="width: auto; margin-right: 10px;"> New message notifications
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compose Message Modal -->
+    <div class="modal-overlay" id="compose-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Send Message to Healthcare Provider</div>
+                <div class="modal-close" id="modal-close">&times;</div>
+            </div>
+            <div class="modal-body">
+                <form id="message-form">
+                    <div class="form-group">
+                        <label for="message-subject">Subject:</label>
+                        <input type="text" id="message-subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message-body">Message:</label>
+                        <textarea id="message-body" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                <button class="btn" id="send-btn">Send Message</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get patient ID from localStorage (set during login)
+            const patientId = localStorage.getItem('patientId') || Math.floor(Math.random() * 100) + 1;
+            
+            // Generate patient data
+            const firstName = ['John', 'Jane', 'Michael', 'Emily', 'David', 'Sarah', 'Robert', 'Lisa', 
+                              'William', 'Maria', 'James', 'Jennifer', 'Thomas', 'Patricia', 'Richard', 
+                              'Linda', 'Charles', 'Elizabeth', 'Joseph', 'Barbara'][Math.floor(Math.random() * 20)];
+            const lastName = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 
+                             'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Wilson', 'Anderson', 'Thomas', 
+                             'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee'][Math.floor(Math.random() * 20)];
+            
+            const patientData = {
+                id: patientId,
+                fullName: `${firstName} ${lastName}`,
+                age: Math.floor(Math.random() * 50) + 20, // 20-70 years
+                weight: Math.floor(Math.random() * 40) + 60, // 60-100 kg
+                height: Math.floor(Math.random() * 30) + 160, // 160-190 cm
+                diagnosis: Math.random() > 0.4 ? 'Type 2 Diabetes' : 'Type 1 Diabetes',
+                email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`,
+                phone: `(${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`
+            };
+            
+            // Generate glucose data for the last 30 days (with 8 readings per day)
+            const glucoseData = [];
+            const now = new Date();
+            for (let day = 29; day >= 0; day--) {
+                for (let reading = 0; reading < 8; reading++) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - day);
+                    
+                    // Distribute readings throughout the day
+                    const hours = [7, 9, 12, 14, 17, 19, 21, 23][reading];
+                    date.setHours(hours, Math.floor(Math.random() * 60), 0, 0);
+                    
+                    // Base glucose level depending on diabetes type
+                    let baseGlucose = patientData.diagnosis === 'Type 1 Diabetes' ? 160 : 140;
+                    
+                    // Add some daily pattern
+                    if (hours === 7) baseGlucose += 20; // Higher in morning (dawn phenomenon)
+                    if (hours === 12 || hours === 17 || hours === 19) baseGlucose += 15; // Higher after meals
+                    if (hours === 23) baseGlucose -= 10; // Lower at night
+                    
+                    // Add random variance
+                    const variance = Math.floor(Math.random() * 60) - 30;
+                    const glucose = baseGlucose + variance;
+                    
+                    glucoseData.push({
+                        date: date,
+                        value: glucose
+                    });
+                }
+            }
+            
+            // Sort readings by date
+            glucoseData.sort((a, b) => a.date - b.date);
+            
+            // Calculate statistics
+            const last24HoursData = glucoseData.filter(reading => {
+                return (now - reading.date) < 24 * 60 * 60 * 1000;
+            });
+            
+            const currentGlucose = last24HoursData.length > 0 ? 
+                last24HoursData[last24HoursData.length - 1].value : 
+                Math.floor(Math.random() * 40) + 130; // Fallback value
+            
+            const previousReading = last24HoursData.length > 1 ? 
+                last24HoursData[last24HoursData.length - 2].value : 
+                currentGlucose - (Math.floor(Math.random() * 20) - 10);
+            
+            const glucoseTrend = currentGlucose - previousReading;
+            
+            // Calculate average glucose for last 7 days
+            const last7DaysData = glucoseData.filter(reading => {
+                return (now - reading.date) < 7 * 24 * 60 * 60 * 1000;
+            });
+            
+            const avgGlucose7Days = Math.round(
+                last7DaysData.reduce((sum, reading) => sum + reading.value, 0) / last7DaysData.length
+            );
+            
+            // Calculate time in range (70-180 mg/dL) for last 24 hours vs previous 24 hours
+            const inRangeCount24h = last24HoursData.filter(reading => 
+                reading.value >= 70 && reading.value <= 180
+            ).length;
+            
+            const timeInRange24h = Math.round((inRangeCount24h / last24HoursData.length) * 100) || 68; // Fallback value
+            
+            // Previous 24 hours
+            const previous24hStart = new Date(now);
+            previous24hStart.setDate(previous24hStart.getDate() - 2);
+            
+            const previous24hEnd = new Date(now);
+            previous24hEnd.setDate(previous24hEnd.getDate() - 1);
+            
+            const previous24hData = glucoseData.filter(reading => {
+                return reading.date >= previous24hStart && reading.date <= previous24hEnd;
+            });
+            
+            const inRangeCountPrevious24h = previous24hData.filter(reading => 
+                reading.value >= 70 && reading.value <= 180
+            ).length;
+            
+            const timeInRangePrevious24h = Math.round((inRangeCountPrevious24h / previous24hData.length) * 100) || 71; // Fallback value
+            
+            const rangeTrend = timeInRange24h - timeInRangePrevious24h;
+            
+            // Previous 7 days
+            const previous7DaysStart = new Date(now);
+            previous7DaysStart.setDate(previous7DaysStart.getDate() - 14);
+            
+            const previous7DaysEnd = new Date(now);
+            previous7DaysEnd.setDate(previous7DaysEnd.getDate() - 7);
+            
+            const previous7DaysData = glucoseData.filter(reading => {
+                return reading.date >= previous7DaysStart && reading.date <= previous7DaysEnd;
+            });
+            
+            const avgGlucosePrevious7Days = Math.round(
+                previous7DaysData.reduce((sum, reading) => sum + reading.value, 0) / previous7DaysData.length
+            ) || avgGlucose7Days - (Math.floor(Math.random() * 20) - 10); // Fallback value
+            
+            const avgTrend = avgGlucose7Days - avgGlucosePrevious7Days;
+            
+            // Generate sample messages
+            const messages = [];
+            
+            // Sample sender (doctor)
+            const doctorName = 'Dr. Johnson';
+            
+            // Add some predefined messages
+            messages.push({
+                id: 1,
+                from: 'doctor',
+                fromName: doctorName,
+                to: patientId,
+                subject: 'Your recent lab results',
+                preview: 'I reviewed your recent blood work and wanted to discuss your A1c levels...',
+                body: 'Dear ' + patientData.fullName + ',\n\nI reviewed your recent blood work and wanted to discuss your A1c levels. Your latest result shows 7.2%, which is slightly higher than our target of under 7%.\n\nLet\'s schedule a follow-up appointment to discuss adjusting your treatment plan.\n\nBest regards,\nDr. Johnson',
+                date: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+                unread: false
+            });
+            
+            messages.push({
+                id: 2,
+                from: 'doctor',
+                fromName: doctorName,
+                to: patientId,
+                subject: 'Medication adjustment',
+                preview: 'Based on your recent glucose readings, I recommend adjusting your insulin dosage...',
+                body: 'Dear ' + patientData.fullName + ',\n\nBased on your recent glucose readings, I recommend adjusting your insulin dosage. Please increase your mealtime insulin by 1 unit for now and continue monitoring your glucose levels closely.\n\nLet me know if you notice any significant changes or have any concerns.\n\nBest regards,\nDr. Johnson',
+                date: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
+                unread: false
+            });
+            
+            // Add a message from the patient
+            messages.push({
+                id: 3,
+                from: 'patient',
+                fromName: patientData.fullName,
+                to: 'doctor',
+                subject: 'Question about new symptoms',
+                preview: 'I\'ve been experiencing some tingling in my feet lately...',
+                body: 'Dr. Johnson,\n\nI\'ve been experiencing some tingling in my feet lately, especially in the evenings. I\'ve read this could be related to diabetes. Should I be concerned?\n\nMy glucose readings have been stable, mostly between 120-160 mg/dL.\n\nThank you,\n' + patientData.fullName,
+                date: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+                unread: false
+            });
+            
+            // Add a recent unread message
+            messages.push({
+                id: 4,
+                from: 'doctor',
+                fromName: doctorName,
+                to: patientId,
+                subject: 'Re: Question about new symptoms',
+                preview: 'Thank you for letting me know about the tingling sensation in your feet...',
+                body: 'Dear ' + patientData.fullName + ',\n\nThank you for letting me know about the tingling sensation in your feet. This could be an early sign of diabetic neuropathy, which is a type of nerve damage that can occur with diabetes.\n\nWhile your glucose readings are relatively stable, we should address this symptom early. I recommend scheduling an appointment for a proper examination.\n\nIn the meantime, continue monitoring your glucose levels carefully and try to keep them in your target range.\n\nBest regards,\nDr. Johnson',
+                date: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
+                unread: true
+            });
+            
+            // Update UI with patient data
+            document.getElementById('username').textContent = patientData.fullName;
+            document.getElementById('patient-name').textContent = patientData.fullName;
+            document.getElementById('patient-age').textContent = patientData.age;
+            document.getElementById('patient-weight').textContent = patientData.weight;
+            document.getElementById('patient-height').textContent = patientData.height;
+            document.getElementById('patient-diagnosis').textContent = patientData.diagnosis;
+            
+            // Update settings form
+            document.getElementById('setting-name').value = patientData.fullName;
+            document.getElementById('setting-email').value = patientData.email;
+            document.getElementById('setting-phone').value = patientData.phone;
+            
+            // Update data cards
+            document.getElementById('current-glucose').textContent = currentGlucose;
+            document.getElementById('time-in-range').textContent = timeInRange24h;
+            document.getElementById('avg-glucose').textContent = avgGlucose7Days;
+            
+            // Update trends
+            const glucoseTrendEl = document.getElementById('glucose-trend');
+            glucoseTrendEl.textContent = Math.abs(glucoseTrend);
+            glucoseTrendEl.parentElement.className = glucoseTrend >= 0 ? 'data-trend up-trend' : 'data-trend down-trend';
+            glucoseTrendEl.previousElementSibling.innerHTML = glucoseTrend >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
+            
+            const rangeTrendEl = document.getElementById('range-trend');
+            rangeTrendEl.textContent = Math.abs(rangeTrend);
+            rangeTrendEl.parentElement.className = rangeTrend >= 0 ? 'data-trend up-trend' : 'data-trend down-trend';
+            rangeTrendEl.previousElementSibling.innerHTML = rangeTrend >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
+            
+            const avgTrendEl = document.getElementById('avg-trend');
+            avgTrendEl.textContent = Math.abs(avgTrend);
+            avgTrendEl.parentElement.className = avgTrend >= 0 ? 'data-trend up-trend' : 'data-trend down-trend';
+            avgTrendEl.previousElementSibling.innerHTML = avgTrend >= 0 ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
+            
+            // Create glucose chart
+            function updateGlucoseChart() {
+                const timeframe = document.getElementById('glucose-timeframe').value;
+                let data;
+                
+                // Filter data based on timeframe
+                if (timeframe === 'day') {
+                    data = glucoseData.filter(reading => {
+                        return (now - reading.date) < 24 * 60 * 60 * 1000;
+                    });
+                } else if (timeframe === 'week') {
+                    data = glucoseData.filter(reading => {
+                        return (now - reading.date) < 7 * 24 * 60 * 60 * 1000;
+                    });
+                } else { // month
+                    data = glucoseData;
+                }
+                
+                // Prepare data for Chart.js
+                const labels = data.map(reading => {
+                    const date = new Date(reading.date);
+                    return date.toLocaleString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric', 
+                        hour: 'numeric', 
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                });
+                
+                const values = data.map(reading => reading.value);
+                
+                // Get the canvas and destroy any existing chart
+                const ctx = document.getElementById('glucose-chart').getContext('2d');
+                if (window.glucoseChart) {
+                    window.glucoseChart.destroy();
+                }
+                
+                // Create new chart
+                window.glucoseChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Glucose (mg/dL)',
+                            data: values,
+                            backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: 'rgba(52, 152, 219, 1)',
+                            pointBorderColor: '#fff',
+                            pointRadius: 4,
+                            tension: 0.2
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 40,
+                                max: 300,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    maxRotation: 45,
+                                    minRotation: 45,
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                        }
+                    }
+                });
+            }
+            
+            // Initialize chart
+            updateGlucoseChart();
+            
+            // Handle timeframe change
+            document.getElementById('glucose-timeframe').addEventListener('change', updateGlucoseChart);
+            
+            // Update message lists
+            function updateMessages() {
+                const previewList = document.getElementById('message-preview-list');
+                const fullList = document.getElementById('message-full-list');
+                
+                // Clear lists
+                previewList.innerHTML = '';
+                fullList.innerHTML = '';
+                
+                // Sort messages by date (newest first)
+                const sortedMessages = [...messages].sort((a, b) => b.date - a.date);
+                
+                // Display max 3 messages in preview
+                const previewMessages = sortedMessages.slice(0, 3);
+                
+                if (previewMessages.length === 0) {
+                    previewList.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No messages to display.</div>';
+                } else {
+                    previewMessages.forEach(message => {
+                        const messageItem = document.createElement('div');
+                        messageItem.className = message.unread ? 'message-item unread' : 'message-item';
+                        
+                        messageItem.innerHTML = `
+                            <div class="message-sender">
+                                ${message.from === 'doctor' ? '<i class="fas fa-user-md"></i>' : '<i class="fas fa-user"></i>'}
+                            </div>
+                            <div class="message-content">
+                                <div class="message-subject">${message.subject}</div>
+                                <div class="message-preview">${message.preview}</div>
+                            </div>
+                            <div class="message-meta">
+                                <div class="message-date">${formatDate(message.date)}</div>
+                                ${message.unread ? '<div class="message-badge">New</div>' : ''}
+                            </div>
+                        `;
+                        
+                        previewList.appendChild(messageItem);
+                    });
+                }
+                
+                // Display all messages in full list
+                if (sortedMessages.length === 0) {
+                    fullList.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">No messages to display.</div>';
+                } else {
+                    sortedMessages.forEach(message => {
+                        const messageItem = document.createElement('div');
+                        messageItem.className = message.unread ? 'message-item unread' : 'message-item';
+                        
+                        messageItem.innerHTML = `
+                            <div class="message-sender">
+                                ${message.from === 'doctor' ? '<i class="fas fa-user-md"></i>' : '<i class="fas fa-user"></i>'}
+                            </div>
+                            <div class="message-content">
+                                <div class="message-subject">${message.subject}</div>
+                                <div class="message-preview">${message.preview}</div>
+                            </div>
+                            <div class="message-meta">
+                                <div class="message-date">${formatDate(message.date)}</div>
+                                ${message.unread ? '<div class="message-badge">New</div>' : ''}
+                            </div>
+                        `;
+                        
+                        messageItem.addEventListener('click', function() {
+                            // Show message detail (could be expanded in a future version)
+                            alert(`${message.subject}\n\n${message.body}`);
+                            
+                            // Mark as read
+                            if (message.unread) {
+                                message.unread = false;
+                                messageItem.classList.remove('unread');
+                                if (messageItem.querySelector('.message-badge')) {
+                                    messageItem.querySelector('.message-badge').remove();
+                                }
+                                // Update the preview list as well
+                                updateMessages();
+                            }
+                        });
+                        
+                        fullList.appendChild(messageItem);
+                    });
+                }
+            }
+            
+            // Initialize messages
+            updateMessages();
+            
+            // Helper function to format dates
+            function formatDate(date) {
+                const now = new Date();
+                const messageDate = new Date(date);
+                
+                // If today, show time
+                if (messageDate.toDateString() === now.toDateString()) {
+                    return messageDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+                }
+                
+                // If this year, show month and day
+                if (messageDate.getFullYear() === now.getFullYear()) {
+                    return messageDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }
+                
+                // Otherwise show full date
+                return messageDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+            
+            // Navigation between views
+            const dashboardLink = document.getElementById('dashboard-link');
+            const messagesLink = document.getElementById('messages-link');
+            const tipsLink = document.getElementById('tips-link');
+            const settingsLink = document.getElementById('settings-link');
+            
+            const dashboardView = document.getElementById('dashboard-view');
+            const messagesView = document.getElementById('messages-view');
+            const tipsView = document.getElementById('tips-view');
+            const settingsView = document.getElementById('settings-view');
+            
+            dashboardLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                setActiveView(dashboardLink, dashboardView);
+            });
+            
+            messagesLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                setActiveView(messagesLink, messagesView);
+            });
+            
+            tipsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                setActiveView(tipsLink, tipsView);
+            });
+            
+            settingsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                setActiveView(settingsLink, settingsView);
+            });
+            
+            function setActiveView(activeLink, activeView) {
+                // Update links
+                dashboardLink.classList.remove('active');
+                messagesLink.classList.remove('active');
+                tipsLink.classList.remove('active');
+                settingsLink.classList.remove('active');
+                activeLink.classList.add('active');
+                
+                // Update views
+                dashboardView.style.display = 'none';
+                messagesView.style.display = 'none';
+                tipsView.style.display = 'none';
+                settingsView.style.display = 'none';
+                activeView.style.display = 'block';
+                
+                // Refresh chart if showing dashboard
+                if (activeView === dashboardView) {
+                    updateGlucoseChart();
+                }
+            }
+            
+            // Compose message modal
+            const composeModal = document.getElementById('compose-modal');
+            const composeBtn = document.getElementById('compose-btn');
+            const composeBtn2 = document.getElementById('compose-btn-2');
+            const closeBtn = document.getElementById('modal-close');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const sendBtn = document.getElementById('send-btn');
+            const messageForm = document.getElementById('message-form');
+            
+            // Open compose modal
+            composeBtn.addEventListener('click', function() {
+                composeModal.style.display = 'flex';
+            });
+            
+            composeBtn2.addEventListener('click', function() {
+                composeModal.style.display = 'flex';
+            });
+            
+            // Close modal functions
+            function closeModal() {
+                composeModal.style.display = 'none';
+                messageForm.reset();
+            }
+            
+            closeBtn.addEventListener('click', closeModal);
+            cancelBtn.addEventListener('click', closeModal);
+            
+            // Click outside to close
+            composeModal.addEventListener('click', function(e) {
+                if (e.target === composeModal) {
+                    closeModal();
+                }
+            });
+            
+            // Send message
+            sendBtn.addEventListener('click', function() {
+                const subject = document.getElementById('message-subject').value;
+                const body = document.getElementById('message-body').value;
+                
+                if (!subject || !body) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Create new message
+                const newMessage = {
+                    id: Date.now(),
+                    from: 'patient',
+                    fromName: patientData.fullName,
+                    to: 'doctor',
+                    subject: subject,
+                    preview: body.substring(0, 60) + (body.length > 60 ? '...' : ''),
+                    body: body,
+                    date: new Date(),
+                    unread: false
+                };
+                
+                // Add message to list
+                messages.push(newMessage);
+                
+                // Update message display
+                updateMessages();
+                
+                // Show confirmation and close modal
+                alert('Message sent successfully');
+                closeModal();
+            });
+            
+            // Handle settings form submission
+            document.getElementById('settings-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const password = document.getElementById('setting-password').value;
+                const confirmPassword = document.getElementById('setting-password-confirm').value;
+                
+                if (password && password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                // Update patient data (in a real app, this would be sent to the server)
+                patientData.fullName = document.getElementById('setting-name').value;
+                patientData.email = document.getElementById('setting-email').value;
+                patientData.phone = document.getElementById('setting-phone').value;
+                
+                // Update UI
+                document.getElementById('username').textContent = patientData.fullName;
+                document.getElementById('patient-name').textContent = patientData.fullName;
+                
+                // Show confirmation
+                alert('Settings updated successfully');
+            });
+        });
+    </script>
+</body>
+</html>

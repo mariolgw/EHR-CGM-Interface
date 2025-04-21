@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CGM-EHR Integration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2a5c8b;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: white;
+            padding: 5px 0;
+            font-weight: 500;
+            position: relative;
+            text-decoration: none;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #3498db;
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Login Section Styles */
+        .login-section {
+            padding: 80px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 70px);
+            background: linear-gradient(135deg, #f5f9ff 0%, #e0f7fa 100%);
+        }
+
+        .login-container {
+            display: flex;
+            max-width: 900px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-image {
+            width: 50%;
+            background: linear-gradient(135deg, #2a5c8b 0%, #3498db 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .login-image h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .login-image p {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+        }
+
+        .login-form-container {
+            width: 50%;
+            padding: 40px;
+        }
+
+        .login-form-container h2 {
+            color: #2a5c8b;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .login-tabs {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .login-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f5f9ff;
+            border-bottom: 2px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .login-tab.active {
+            background-color: white;
+            border-bottom: 2px solid #3498db;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #27ae60;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #219653;
+            transform: translateY(-2px);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2a3f54;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .copyright {
+            color: #cccccc;
+        }
+
+        /* Error message */
+        .error-message {
+            color: #e74c3c;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 400px;
+            }
+            
+            .login-image, .login-form-container {
+                width: 100%;
+            }
+            
+            .login-image {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                CGM-EHR Integration
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-section">
+        <div class="login-container">
+            <div class="login-image">
+                <div class="login-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h2>CGM-EHR Integration</h2>
+                <p>Access your integrated glucose monitoring and electronic health record platform for improved diabetic care management.</p>
+            </div>
+            <div class="login-form-container">
+                <h2>Sign In</h2>
+                <div class="login-tabs">
+                    <div class="login-tab active" id="provider-tab">Healthcare Provider</div>
+                    <div class="login-tab" id="patient-tab">Patient</div>
+                </div>
+                <form id="provider-form" action="#" method="post">
+                    <div class="form-group">
+                        <label for="provider-username">Username</label>
+                        <input type="text" id="provider-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="provider-password">Password</label>
+                        <input type="password" id="provider-password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                    <div class="error-message" id="provider-error">Invalid username or password. Please try again.</div>
+                </form>
+                <form id="patient-form" action="#" method="post" style="display: none;">
+                    <div class="form-group">
+                        <label for="patient-username">Patient ID</label>
+                        <input type="text" id="patient-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-password">Password</label>
+                        <input type="password" id="patient-password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">Sign In</button>
+                    <div class="error-message" id="patient-error">Invalid patient ID or password. Please try again.</div>
+                </form>
+                <div class="forgot-password">
+                    <a href="#">Forgot your password?</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                &copy; 2025 CGM-EHR Integration Project. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const providerTab = document.getElementById('provider-tab');
+            const patientTab = document.getElementById('patient-tab');
+            const providerForm = document.getElementById('provider-form');
+            const patientForm = document.getElementById('patient-form');
+            
+            // Function to switch between tabs
+            function switchToTab(tabType) {
+                if (tabType === 'patient') {
+                    patientTab.classList.add('active');
+                    providerTab.classList.remove('active');
+                    patientForm.style.display = 'block';
+                    providerForm.style.display = 'none';
+                } else {
+                    // Default to provider tab
+                    providerTab.classList.add('active');
+                    patientTab.classList.remove('active');
+                    providerForm.style.display = 'block';
+                    patientForm.style.display = 'none';
+                }
+                // Clear any error messages
+                document.getElementById('provider-error').style.display = 'none';
+                document.getElementById('patient-error').style.display = 'none';
+            }
+            
+            // Check URL parameters to determine which tab to show
+            const urlParams = new URLSearchParams(window.location.search);
+            const userType = urlParams.get('type');
+            
+            // Set the initial tab based on the URL parameter
+            switchToTab(userType);
+            
+            // Tab switching when clicked
+            providerTab.addEventListener('click', function() {
+                switchToTab('provider');
+            });
+            
+            patientTab.addEventListener('click', function() {
+                switchToTab('patient');
+            });
+            
+            // Provider login form handling
+            providerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('provider-username').value;
+                const password = document.getElementById('provider-password').value;
+                
+                if (username === 'doc' && password === 'password') {
+                    // Successful login
+                    window.location.href = 'provider_portal.html';
+                } else {
+                    // Failed login
+                    document.getElementById('provider-error').style.display = 'block';
+                }
+            });
+            
+            // Patient login form handling
+            patientForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('patient-username').value;
+                const password = document.getElementById('patient-password').value;
+                
+                // Check if username is a number between 1 and 100
+                const patientId = parseInt(username);
+                
+                if (!isNaN(patientId) && patientId >= 1 && patientId <= 100 && password === 'password') {
+                    // Successful login
+                    // Store the patient ID to use in the patient portal
+                    localStorage.setItem('patientId', patientId);
+                    window.location.href = 'patient_portal.html';
+                } else {
+                    // Failed login
+                    document.getElementById('patient-error').style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
